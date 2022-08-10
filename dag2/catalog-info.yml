@@ -9,10 +9,10 @@ kind: Component
 metadata:
   # The name of your entity, this should match the repo name or the deployed
   # name of the entity
-  name: dage1_test_name
+  name: dage2_test_NAME
   # Brief description of the entity, include purpose, technologies, languages, frameworks etc
   description: |
-    Pipeline dage1_test_name description - FAKE.
+    Pipeline dage2_test_NAME description - FAKE.
   # Metadata about the entity
   annotations:
     # Directory of techdocs to render if rendering local documentation
