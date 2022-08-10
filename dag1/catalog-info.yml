@@ -98,19 +98,33 @@ spec:
   # These are things that are vital to the service functioning properly, if
   # you would put it in a healthcheck you should put it here
   dependsOn:
-    - resource:airflow-resource
-#    - resource:airflow-s3-logs
+    - resource:airflow-db
+    - resource:airflow-s3-logs
 ---
 apiVersion: backstage.io/v1alpha1
-kind: airflow-resource
+kind: Resource
 metadata:
-  name: airflow-resource
-  description: FAke descriptiotn for 1
+  name: airflow-db
+  description: Database for airflow service
   tags:
-    - redshift
-    - Heroku
-  links: []
+    - postgres
+    - rds
+  links: [] # TODO: Insert RDS Links here
 spec:
   type: database
-  owner: data-engineering
+  owner: mlops
+  system: atlas
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: airflow-s3-logs
+  description: S3 Bucket for Airflow Logs
+  tags:
+    - aws
+    - s3
+  links: [] # TODO: Insert S3 Links here
+spec:
+  type: s3-bucket
+  owner: mlops
   system: atlas
