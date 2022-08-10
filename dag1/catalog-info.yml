@@ -104,8 +104,8 @@ spec:
 apiVersion: backstage.io/v1alpha1
 kind: airflow-resource
 metadata:
-  name:
-  description: FAke descriptiotn for 1.
+  name: airflow-resource
+  description: FAke descriptiotn for 1
   tags:
     - redshift
     - Heroku
