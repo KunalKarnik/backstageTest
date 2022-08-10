@@ -28,7 +28,7 @@ metadata:
     # The Slug/Prefix of the Jira board; ex:SUPP,SRV,EP,MM
     backstage.c2fo.io/jira-board-slug: 'JIRA'
     # The component on said Jira board that references this entity
-    backstage.c2fo.io/jira-component-label: 'airflow'
+    backstage.c2fo.io/jira-component-label: 'DFT'
     # The primary slack channel for support/information on this entity
     backstage.c2fo.io/slack-channel-name: '#de-ml-ops'
     # The ID of the slack channel above. You can find this by navigating to the
@@ -54,8 +54,6 @@ metadata:
     - emr
     - redshift
     - datadog
-    - docker
-    - github-actions
     - helm
     - kubernetes
     - spark
@@ -69,33 +67,12 @@ metadata:
   # Icons can be selected from any material-ui Icons
   # https://mui.com/components/material-icons/?query=wrench
   links:
-    - url: https://airflow.c2fo.io
-      title: Airflow Prod
-      icon: dashboard
-    - url: https://airflow-uat.c2fo.io
-      title: Airflow UAT
-      icon: dashboard
-    - url: https://airflow-fss.c2fo.io
-      title: Airflow FSS
-      icon: dashboard
-    - url: https://github.com/c2fo/airflow
-      title: GitHub Repository
+    - url: https://github.com/C2FO/atlas/blob/master/jobs/src/main/scala/com/c2fo/atlas/jobs/batch/salesforce/DivisionUpdatesJob.scala
+      title: Code
       icon: github
-    - url: https://app.datadoghq.com/logs?saved-view-id=294945
-      title: Airflow System Logs
-      icon: notes
-    - url: https://honeycomb.jira.com/wiki/spaces/DDS/pages/1164804147/Data+Engineering+Runbook#Warden-Alerts
-      title: DE Runbook for warden alerts
-      icon: article
-    - url: https://vault-us-west-2.c2fo.com/ui/vault/secrets/kv/list/engineering/v1/airflow/data-engineering/
-      title: Prod Vault Secrets(Airflow Prod)
-      icon: lock
-    - url: https://vault-us-west-2-non-prod.c2fo.com/ui/vault/secrets/kv/list/engineering/v1/airflow-uat/data-engineering/
-      title: UAT Vault Secrets(Airflow UAT)
-      icon: lock
-    - url: https://vault-us-west-2-non-prod.c2fo.com/ui/vault/secrets/kv/list/engineering/v1/airflow-fss/data-engineering/
-      title: FSS Vault Secrets(Airflow FSS)
-      icon: lock
+    - url: https://airflow-uat.c2fo.io
+      title: Airflow
+      icon: dashboard
 # This is the actual data needed by Backstage to build the software catalog
 # https://backstage.io/docs/features/software-catalog/descriptor-format
 spec:
@@ -104,15 +81,15 @@ spec:
   # - library: a shared library for consumption in other services/website
   # - website: a website/frontend
   # - service: a backend service
-  type: website
+  type: airflow-dag
   # Lifecycle of the entity; three options
   # - experimental: POC/pre-prod/work in progress/in prod with no consumers
   # - production: has users, deployed to prod, and in use
   # - deprecated: end of lifecycle, being phased out, no new features
-  lifecycle: production
+  lifecycle: experimental
   # Owner of the entity
   # This _must match_ a github team here: https://github.com/orgs/C2FO/teams
-  owner: mlops
+  owner: data-engineering
   # The system this entity belongs to, check backstage to see if your entity
   # Belongs to a system that already exists or create your own with a PR to the backstage
   # repo
@@ -121,33 +98,19 @@ spec:
   # These are things that are vital to the service functioning properly, if
   # you would put it in a healthcheck you should put it here
   dependsOn:
-    - resource:airflow-db
-    - resource:airflow-s3-logs
+    - resource:airflow-resource
+#    - resource:airflow-s3-logs
 ---
 apiVersion: backstage.io/v1alpha1
-kind: Resource
+kind: airflow-resource
 metadata:
-  name: airflow-db
-  description: Database for airflow service
+  name:
+  description: FAke descriptiotn for 1.
   tags:
-    - postgres
-    - rds
-  links: [] # TODO: Insert RDS Links here
+    - redshift
+    - Heroku
+  links: []
 spec:
   type: database
-  owner: mlops
-  system: atlas
----
-apiVersion: backstage.io/v1alpha1
-kind: Resource
-metadata:
-  name: airflow-s3-logs
-  description: S3 Bucket for Airflow Logs
-  tags:
-    - aws
-    - s3
-  links: [] # TODO: Insert S3 Links here
-spec:
-  type: s3-bucket
-  owner: mlops
+  owner: data-engineering
   system: atlas
