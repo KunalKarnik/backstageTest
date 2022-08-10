@@ -1,0 +1,153 @@
+---
+# EXAMPLE COMPONENT TEMPLATE
+# The Backstage API Version
+apiVersion: backstage.io/v1alpha1
+# The Entity you are Defining
+# Options are: Component/API/Resource
+# Info: https://backstage.io/docs/features/software-catalog/system-model
+kind: Component
+metadata:
+  # The name of your entity, this should match the repo name or the deployed
+  # name of the entity
+  name: dage1_test_name
+  # Brief description of the entity, include purpose, technologies, languages, frameworks etc
+  description: |
+    Pipeline dage1_test_name description - FAKE.
+  # Metadata about the entity
+  annotations:
+    # Directory of techdocs to render if rendering local documentation
+    # the . in squigly brackets references the path to the readme
+    backstage.io/techdocs-ref: dir:.
+    # The label on the Kubernetes pods to show in the kubernetes tab
+    backstage.io/kubernetes-id: ???
+    # The confluence page id to render at the root of the documentation tab
+    # This can be found as the last number in the Confluence URL
+    # If you don't have a Confluence page, create one under
+    # https://honeycomb.Jira.com/wiki/spaces/ENG/pages/3180036330/Repositories
+    backstage.c2fo.io/confluence-id: '???'
+    # The Slug/Prefix of the Jira board; ex:SUPP,SRV,EP,MM
+    backstage.c2fo.io/jira-board-slug: 'JIRA'
+    # The component on said Jira board that references this entity
+    backstage.c2fo.io/jira-component-label: 'airflow'
+    # The primary slack channel for support/information on this entity
+    backstage.c2fo.io/slack-channel-name: '#de-ml-ops'
+    # The ID of the slack channel above. You can find this by navigating to the
+    # channel on Slack in the browser or pressing "channel info" in the slack desktop app
+    backstage.c2fo.io/slack-channel-id: 'xxxxxxxx'
+    # The source name in DataDog when finding logs/metrics of this entity
+    backstage.c2fo.io/datadog-source-name: 'airflow'
+    # The GitHub slug/url suffix for this entity
+    github.com/project-slug: C2FO/airflow
+    # The harbor slug including the repository where the images of this entity are stored
+    goharbor.io/repository-slug: c2fo/airflow
+  # Tags to show in the backstage UI, things you will want to put as tags
+  # for a component are:
+  # - technologies/frameworks
+  # - programming languages
+  # - major apis/integrations
+  # - deployment tooling
+  # - CI tooling
+  tags:
+    - airflow
+    - dag
+    - python
+    - emr
+    - redshift
+    - datadog
+    - docker
+    - github-actions
+    - helm
+    - kubernetes
+    - spark
+  # Links to render in the backstage entity page for quick access
+  # types of links you will want here:
+  # - github url
+  # - datadog log url
+  # - datadog dashboard url
+  # - confluence info
+  # - oncall info/operations guides
+  # Icons can be selected from any material-ui Icons
+  # https://mui.com/components/material-icons/?query=wrench
+  links:
+    - url: https://airflow.c2fo.io
+      title: Airflow Prod
+      icon: dashboard
+    - url: https://airflow-uat.c2fo.io
+      title: Airflow UAT
+      icon: dashboard
+    - url: https://airflow-fss.c2fo.io
+      title: Airflow FSS
+      icon: dashboard
+    - url: https://github.com/c2fo/airflow
+      title: GitHub Repository
+      icon: github
+    - url: https://app.datadoghq.com/logs?saved-view-id=294945
+      title: Airflow System Logs
+      icon: notes
+    - url: https://honeycomb.jira.com/wiki/spaces/DDS/pages/1164804147/Data+Engineering+Runbook#Warden-Alerts
+      title: DE Runbook for warden alerts
+      icon: article
+    - url: https://vault-us-west-2.c2fo.com/ui/vault/secrets/kv/list/engineering/v1/airflow/data-engineering/
+      title: Prod Vault Secrets(Airflow Prod)
+      icon: lock
+    - url: https://vault-us-west-2-non-prod.c2fo.com/ui/vault/secrets/kv/list/engineering/v1/airflow-uat/data-engineering/
+      title: UAT Vault Secrets(Airflow UAT)
+      icon: lock
+    - url: https://vault-us-west-2-non-prod.c2fo.com/ui/vault/secrets/kv/list/engineering/v1/airflow-fss/data-engineering/
+      title: FSS Vault Secrets(Airflow FSS)
+      icon: lock
+# This is the actual data needed by Backstage to build the software catalog
+# https://backstage.io/docs/features/software-catalog/descriptor-format
+spec:
+  # Sub-type of entity
+  # This can be anything, some examples are:
+  # - library: a shared library for consumption in other services/website
+  # - website: a website/frontend
+  # - service: a backend service
+  type: website
+  # Lifecycle of the entity; three options
+  # - experimental: POC/pre-prod/work in progress/in prod with no consumers
+  # - production: has users, deployed to prod, and in use
+  # - deprecated: end of lifecycle, being phased out, no new features
+  lifecycle: production
+  # Owner of the entity
+  # This _must match_ a github team here: https://github.com/orgs/C2FO/teams
+  owner: mlops
+  # The system this entity belongs to, check backstage to see if your entity
+  # Belongs to a system that already exists or create your own with a PR to the backstage
+  # repo
+  system: atlas
+  # Dependencies this entity has to function
+  # These are things that are vital to the service functioning properly, if
+  # you would put it in a healthcheck you should put it here
+  dependsOn:
+    - resource:airflow-db
+    - resource:airflow-s3-logs
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: airflow-db
+  description: Database for airflow service
+  tags:
+    - postgres
+    - rds
+  links: [] # TODO: Insert RDS Links here
+spec:
+  type: database
+  owner: mlops
+  system: atlas
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: airflow-s3-logs
+  description: S3 Bucket for Airflow Logs
+  tags:
+    - aws
+    - s3
+  links: [] # TODO: Insert S3 Links here
+spec:
+  type: s3-bucket
+  owner: mlops
+  system: atlas
